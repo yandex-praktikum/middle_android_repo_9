@@ -3,6 +3,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
@@ -27,21 +28,21 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `empty fields error test`() {
+    fun `empty fields error test`() = runTest {
         viewModelTest.login("", "")
 
         assertEquals(viewModelTest.state.value, LoginScreenState.EmptyFieldsError)
     }
 
     @Test
-    fun `wrong email test`() {
+    fun `wrong email test`() = runTest {
         viewModelTest.login("somestring", "123456")
 
         assertEquals(viewModelTest.state.value, LoginScreenState.EmailValidationError)
     }
 
     @Test
-    fun `loading test`() {
+    fun `loading test`() = runTest {
         viewModelTest.login("somestring@yandex.ru", "123456")
 
         testDispatcher.scheduler.runCurrent()
@@ -49,7 +50,7 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `success test`() {
+    fun `success test`() = runTest {
         viewModelTest.login("somestring@yandex.ru", "123456")
 
         testDispatcher.scheduler.runCurrent()
